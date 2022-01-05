@@ -55,6 +55,7 @@ KERNEL_AOSP_LLVM_BIN := $(SOURCE_ROOT)/$(LLVM_PREBUILTS_BASE)/$(BUILD_OS)-x86/$(
 KERNEL_AOSP_LLVM_CLANG := $(KERNEL_AOSP_LLVM_BIN)/clang
 USE_KERNEL_AOSP_LLVM := $(shell test -f "$(KERNEL_AOSP_LLVM_CLANG)" && echo "true" || echo "false")
 SDCLANG_PATH := $(SOURCE_ROOT)/vendor/qcom/sdclang/compiler/bin
+KERNEL_CUSTOM_LLVM_BIN := $(SOURCE_ROOT)/prebuilts/clang/host/linux-x86/clang-$(KERNEL_CUSTOM_LLVM)/bin
 
 KERNEL_TARGET := $(strip $(INSTALLED_KERNEL_TARGET))
 ifeq ($(KERNEL_TARGET),)
@@ -129,6 +130,8 @@ ifeq ($(KERNEL_LLVM_SUPPORT),true)
   else
     KERNEL_LLVM_BIN := $(shell pwd)/prebuilts/clang/host/linux-x86/clang-$(KERNEL_CUSTOM_LLVM)/bin/clang
     $(info "Using custom llvm: $(KERNEL_CUSTOM_LLVM)" $(KERNEL_LLVM_BIN))
+    cc := CC=$(KERNEL_LLVM_BIN) CROSS_COMPILE=$(KERNEL_CUSTOM_LLVM_BIN)/aarch64-linux-gnu- CROSS_COMPILE_ARM32=$(KERNEL_CUSTOM_LLVM_BIN)/arm-linux-gnueabi- AR=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-ar NM=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-nm OBJCOPY=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-objcopy OBJDUMP=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-objdump STRIP=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-strip
+    real_cc := REAL_CC=$(KERNEL_LLVM_BIN) CROSS_COMPILE=$(KERNEL_CUSTOM_LLVM_BIN)/aarch64-linux-gnu- CROSS_COMPILE_ARM32=$(KERNEL_CUSTOM_LLVM_BIN)/arm-linux-gnueabi- AR=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-ar NM=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-nm OBJCOPY=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-objcopy OBJDUMP=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-objdump STRIP=$(KERNEL_CUSTOM_LLVM_BIN)/llvm-strip
   endif
   ifeq ($(USE_KERNEL_AOSP_LLVM), true)
      cc := CC=$(KERNEL_LLVM_BIN) CLANG_TRIPLE=aarch64-linux-gnu- AR=$(KERNEL_AOSP_LLVM_BIN)/llvm-ar LLVM_NM=$(KERNEL_AOSP_LLVM_BIN)/llvm-nm LD=$(KERNEL_AOSP_LLVM_BIN)/ld.lld NM=$(KERNEL_AOSP_LLVM_BIN)/llvm-nm
