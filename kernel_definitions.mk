@@ -54,6 +54,7 @@ KERNEL_LLVM_BIN := $(lastword $(sort $(wildcard $(SOURCE_ROOT)/$(LLVM_PREBUILTS_
 KERNEL_AOSP_LLVM_BIN := $(SOURCE_ROOT)/$(LLVM_PREBUILTS_BASE)/$(BUILD_OS)-x86/$(CLANG_VERSION)/bin
 KERNEL_AOSP_LLVM_CLANG := $(KERNEL_AOSP_LLVM_BIN)/clang
 USE_KERNEL_AOSP_LLVM := $(shell test -f "$(KERNEL_AOSP_LLVM_CLANG)" && echo "true" || echo "false")
+SDCLANG_PATH := $(SOURCE_ROOT)/vendor/qcom/sdclang/compiler/bin
 
 KERNEL_TARGET := $(strip $(INSTALLED_KERNEL_TARGET))
 ifeq ($(KERNEL_TARGET),)
